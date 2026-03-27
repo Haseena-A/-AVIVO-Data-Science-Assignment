@@ -1,0 +1,23 @@
+# Core bot
+python-telegram-bot==21.6
+python-dotenv==1.0.1
+
+# RAG / Embeddings
+sentence-transformers==3.0.1
+numpy==1.26.4
+
+# Vision (optional — for local BLIP model)
+# Uncomment if you want local inference instead of Claude Vision API
+# transformers==4.43.3
+# torch==2.3.1
+# Pillow==10.4.0
+# accelerate==0.33.0
+
+# Pillow is needed even with Claude Vision (for validation)
+Pillow==10.4.0
+
+# Anthropic Claude API (recommended for both LLM and Vision)
+anthropic==0.34.2
+
+# HTTP (for Ollama fallback)
+requests==2.32.3

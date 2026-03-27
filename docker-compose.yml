@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  telebot:
+    build: .
+    container_name: genai-telebot
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-haiku-4-5-20251001}
+      - EMBED_MODEL=${EMBED_MODEL:-all-MiniLM-L6-v2}
+      - DB_PATH=/data/rag_store.db
+      - KB_DIR=/app/knowledge_base
+    volumes:
+      - ./knowledge_base:/app/knowledge_base:ro
+      - telebot_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sqlite3; sqlite3.connect('/data/rag_store.db')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Ollama for local LLM (no API key needed)
+  # Uncomment to use local inference
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   environment:
+  #     - OLLAMA_NUM_PARALLEL=1
+
+volumes:
+  telebot_data:
+  # ollama_data:
